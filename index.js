@@ -6,7 +6,6 @@ var jwt = require("jsonwebtoken");
 const port = process.env.PORT || 4321;
 
 // middleware
-
 app.use(
   cors({
     origin: ["http://localhost:5173"],
