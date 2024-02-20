@@ -33,6 +33,7 @@ async function run() {
 
     const serviceCollection = client.db("techWorld").collection("service");
     const userCollection = client.db("techWorld").collection("user");
+    const cartCollection = client.db("techWorld").collection("cart");
 
     // jwt api
     app.post("/jwt", async (req, res) => {
@@ -63,6 +64,21 @@ async function run() {
     // service api
     app.get("/service", async (req, res) => {
       const result = await serviceCollection.find().toArray();
+      res.send(result);
+    });
+
+
+    // cart api
+    app.post("/cart", async (req, res) => {
+      const cartItem = req.body;
+      const result = await cartCollection.insertOne(cartItem);
+      res.send(result);
+    });
+
+    app.get("/cart", async (req, res) => {
+      const email = req.query.email;
+      const query = { email: email };
+      const result = await cartCollection.find(query).toArray();
       res.send(result);
     });
 
