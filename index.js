@@ -8,7 +8,7 @@ const port = process.env.PORT || 4321;
 // middleware
 app.use(
   cors({
-    origin: ["http://localhost:5173"],
+    origin: ["http://localhost:5173", "tech-world-client-1def7.web.app", "tech-world-client-1def7.firebaseapp.com"],
     // credentials: true,
   })
 );
@@ -36,6 +36,7 @@ async function run() {
     const cartCollection = client.db("techWorld").collection("cart");
     const brandCollection = client.db("techWorld").collection("brand");
     const reviewCollection = client.db("techWorld").collection("review");
+    const newsCollection = client.db("techWorld").collection("news");
 
     // jwt api
     app.post("/jwt", async (req, res) => {
@@ -81,9 +82,17 @@ async function run() {
       res.send(result);
     });
 
+
     // review api
     app.get("/review", async (req, res) => {
       const result = await reviewCollection.find().toArray();
+      res.send(result);
+    });
+
+
+    // news api
+    app.get("/news", async (req, res) => {
+      const result = await newsCollection.find().toArray();
       res.send(result);
     });
 
