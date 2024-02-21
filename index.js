@@ -34,6 +34,7 @@ async function run() {
     const serviceCollection = client.db("techWorld").collection("service");
     const userCollection = client.db("techWorld").collection("user");
     const cartCollection = client.db("techWorld").collection("cart");
+    const brandCollection = client.db("techWorld").collection("brand");
 
     // jwt api
     app.post("/jwt", async (req, res) => {
@@ -70,6 +71,12 @@ async function run() {
     app.post("/service", async (req, res) => {
       const productItem = req.body;
       const result = await serviceCollection.insertOne(productItem);
+      res.send(result);
+    });
+
+    // brand api
+    app.get("/brand", async (req, res) => {
+      const result = await brandCollection.find().toArray();
       res.send(result);
     });
 
