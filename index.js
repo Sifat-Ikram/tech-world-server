@@ -2,19 +2,25 @@ const express = require("express");
 const app = express();
 const cors = require("cors");
 require("dotenv").config();
-var jwt = require("jsonwebtoken");
 const port = process.env.PORT || 4321;
+const { MongoClient, ServerApiVersion, ObjectId } = require("mongodb");
 
 // middleware
-app.use(
-  cors({
-    origin: ["http://localhost:5173", "tech-world-client-1def7.web.app", "tech-world-client-1def7.firebaseapp.com"],
-    credentials: true,
-  })
-);
+app.use(cors({
+  origin: ['https://tech-world-client-1def7.web.app/'],
+  credentials: true,
+}));
 app.use(express.json());
+app.use((req, res, next) => {
+  res.setHeader('Access-Control-Allow-Origin', 'https://tech-world-client-1def7.web.app');
+  // Additional headers you may need
+  res.setHeader('Access-Control-Allow-Methods', 'GET, POST, OPTIONS, PUT, PATCH, DELETE');
+  res.setHeader('Access-Control-Allow-Headers', 'X-Requested-With,content-type');
+  res.setHeader('Access-Control-Allow-Credentials', true);
+  next();
+});
 
-const { MongoClient, ServerApiVersion, ObjectId } = require("mongodb");
+
 const uri = `mongodb+srv://${process.env.DB_USER}:${process.env.DB_PASS}@cluster0.jrqljyn.mongodb.net/?retryWrites=true&w=majority`;
 
 // Create a MongoClient with a MongoClientOptions object to set the Stable API version
@@ -38,14 +44,7 @@ async function run() {
     const reviewCollection = client.db("techWorld").collection("review");
     const newsCollection = client.db("techWorld").collection("news");
 
-    // jwt api
-    app.post("/jwt", async (req, res) => {
-      const user = req.body;
-      const token = jwt.sign(user, process.env.ACCESS_TOKEN, {
-        expiresIn: "1h",
-      });
-      res.send({ token });
-    });
+    
 
     // user api
     app.post("/user", async (req, res) => {
