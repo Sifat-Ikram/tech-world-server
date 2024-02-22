@@ -9,7 +9,7 @@ const port = process.env.PORT || 4321;
 app.use(
   cors({
     origin: ["http://localhost:5173", "tech-world-client-1def7.web.app", "tech-world-client-1def7.firebaseapp.com"],
-    // credentials: true,
+    credentials: true,
   })
 );
 app.use(express.json());
@@ -29,7 +29,7 @@ const client = new MongoClient(uri, {
 async function run() {
   try {
     // Connect the client to the server	(optional starting in v4.7)
-    await client.connect();
+    // await client.connect();
 
     const serviceCollection = client.db("techWorld").collection("service");
     const userCollection = client.db("techWorld").collection("user");
